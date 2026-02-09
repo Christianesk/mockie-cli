@@ -5,6 +5,9 @@
 ## 🚀 Quick Start
 
 ```bash
+# Show help
+cargo run -- help
+
 # Start the server
 cargo run -- serve --port 3000
 
@@ -30,6 +33,37 @@ curl http://localhost:3000/users
 - ✅ JSON file persistence
 - ✅ Hot reload of endpoints
 - ✅ Intuitive CLI with `clap`
+- ✅ Built-in help command
+
+## 🎯 Available Commands
+
+```bash
+# Show help
+cargo run -- help
+# or
+cargo run -- serve --help
+cargo run -- add --help
+cargo run -- list --help
+cargo run -- shutdown --help
+
+# Start mock server
+cargo run -- serve [--port PORT]
+
+# Add endpoint
+cargo run -- add \
+  --method METHOD \
+  --path PATH \
+  [--status STATUS] \
+  [--delay_ms DELAY] \
+  --response RESPONSE \
+  [--server URL]
+
+# List endpoints
+cargo run -- list [--server URL]
+
+# Shutdown server
+cargo run -- shutdown [--server URL]
+```
 
 ## 🛠️ Development
 
@@ -83,6 +117,16 @@ Response:
 ]
 ```
 
+#### Shutdown server
+```bash
+POST /__admin/shutdown
+
+Response:
+{
+  "message": "Server shutting down..."
+}
+```
+
 ### Mock Endpoints
 
 Any request that is not to `/__admin/*` is treated as mock:
@@ -129,6 +173,16 @@ curl -X POST http://localhost:3000/users \
 
 # GET request
 curl http://localhost:3000/slow
+```
+
+## 🛑 Shutdown
+
+```bash
+# Shutdown using CLI
+cargo run -- shutdown
+
+# Shutdown using REST API
+curl -X POST http://localhost:3000/__admin/shutdown
 ```
 
 ## 🤝 Contributing

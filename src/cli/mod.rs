@@ -6,7 +6,7 @@ pub mod commands;
 #[command(
     name = "mockie",
     version,
-    about = "🎭 Mock HTTP server configurable por CLI"
+    about = "🎭 Configurable Mock HTTP server from CLI"
 )]
 pub struct Cli {
     #[command(subcommand)]

@@ -95,3 +95,14 @@ pub async fn list_routes(State(routes): State<RouteStore>) -> impl IntoResponse 
 
     Json(list).into_response()
 }
+
+/// Shuts down the server
+pub async fn shutdown_server() -> impl IntoResponse {
+    // Spawn a task to shutdown after a small delay to allow response to be sent
+    tokio::spawn(async {
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+        std::process::exit(0);
+    });
+
+    Json(json!({ "message": "Server shutting down..." })).into_response()
+}

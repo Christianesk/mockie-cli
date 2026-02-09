@@ -2,7 +2,7 @@
 use axum::{extract::Request, routing::post, Router};
 use tokio::net::TcpListener;
 
-use crate::handlers::{add_route, handle_mock_request, list_routes};
+use crate::handlers::{add_route, handle_mock_request, list_routes, shutdown_server};
 use crate::storage::RouteStore;
 
 /// Starts the HTTP server on the specified port
@@ -11,6 +11,7 @@ pub async fn run(routes: RouteStore, port: u16) -> crate::error::Result<()> {
     let app = Router::new()
         // Admin API
         .route("/__admin/routes", post(add_route).get(list_routes))
+        .route("/__admin/shutdown", post(shutdown_server))
         // Catch-all for mock endpoints
         .fallback(|request: Request| async move {
             handle_mock_request(routes_for_fallback.clone(), request).await

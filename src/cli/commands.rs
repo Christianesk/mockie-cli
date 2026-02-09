@@ -36,4 +36,10 @@ pub enum Commands {
         #[arg(long, default_value = "http://localhost:3000")]
         server: String,
     },
+
+    /// 🛑 Shutdown the mock server
+    Shutdown {
+        #[arg(long, default_value = "http://localhost:3000")]
+        server: String,
+    },
 }

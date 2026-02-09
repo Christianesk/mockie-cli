@@ -51,7 +51,7 @@ async fn main() -> Result<()> {
                 .send()
                 .await?;
 
-            println!("✅ Endpoint agregado");
+            println!("✅ Endpoint added");
         }
 
         cli::commands::Commands::List { server } => {
@@ -61,6 +61,21 @@ async fn main() -> Result<()> {
                 .await?;
 
             println!("{}", serde_json::to_string_pretty(&resp)?);
+        }
+
+        cli::commands::Commands::Shutdown { server } => {
+            let resp = reqwest::Client::new()
+                .post(format!("{server}/__admin/shutdown"))
+                .send()
+                .await?
+                .json::<Value>()
+                .await?;
+
+            println!(
+                "🛑 {}",
+                resp.get("message")
+                    .unwrap_or(&Value::String("Server shutdown".to_string()))
+            );
         }
     }
 
