@@ -7,6 +7,7 @@ use tokio::fs;
 
 use super::{RouteStore, Storage};
 
+#[derive(Clone)]
 pub struct FileStorage {
     path: String,
 }

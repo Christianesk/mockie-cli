@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 
 use crate::models::RouteConfig;
-use crate::storage::RouteStore;
+use crate::server::AppState;
 
 #[derive(Deserialize, Debug)]
 pub struct AddRouteRequest {
@@ -32,7 +32,7 @@ pub struct RouteResponse {
 
 /// Adds a new route
 pub async fn add_route(
-    State(routes): State<RouteStore>,
+    State(state): State<AppState>,
     Json(payload): Json<AddRouteRequest>,
 ) -> impl IntoResponse {
     // Create and validate the new route
@@ -54,7 +54,7 @@ pub async fn add_route(
 
     // Insert into storage
     {
-        let mut map = match routes.write() {
+        let mut map = match state.routes.write() {
             Ok(m) => m,
             Err(e) => {
                 return (
@@ -67,12 +67,21 @@ pub async fn add_route(
         map.insert((route.method.clone(), route.path.clone()), route);
     }
 
+    // Save to disk
+    if let Err(e) = state.storage.save_from_store(&state.routes).await {
+        return (
+            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"error": format!("Failed to persist route: {}", e)})),
+        )
+            .into_response();
+    }
+
     Json(json!({ "ok": true })).into_response()
 }
 
 /// Lists all registered routes
-pub async fn list_routes(State(routes): State<RouteStore>) -> impl IntoResponse {
-    let map = match routes.read() {
+pub async fn list_routes(State(state): State<AppState>) -> impl IntoResponse {
+    let map = match state.routes.read() {
         Ok(m) => m,
         Err(e) => {
             return (

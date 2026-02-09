@@ -25,7 +25,7 @@ async fn main() -> Result<()> {
             let storage = FileStorage::new(config.storage_file.clone());
             let routes = storage.load_initial_state()?;
 
-            server::run(routes, port).await?;
+            server::run(routes, port, storage).await?;
         }
 
         cli::commands::Commands::Add {
