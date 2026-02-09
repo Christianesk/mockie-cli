@@ -89,6 +89,37 @@ cargo build --release
 
 ## 🎯 Available Commands
 
+### After Installation
+
+Once Mockie is installed on your system, you can use it directly from the command line:
+
+```bash
+# Show help
+mockie help
+
+# Start the server
+mockie serve --port 3000
+
+# Add an endpoint
+mockie add \
+  --method GET \
+  --path /users \
+  --response '{"users":[{"id":1,"name":"John"}]}'
+
+# List endpoints
+mockie list
+
+# Shutdown server
+mockie shutdown
+
+# Show version
+mockie --version
+```
+
+### Development (From Source)
+
+If you're developing or running from source, use `cargo run`:
+
 ```bash
 # Show help
 cargo run -- help

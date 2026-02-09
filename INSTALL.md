@@ -184,15 +184,89 @@ MOCKIE_PORT=8080 MOCKIE_LOG_LEVEL=debug mockie serve
 
 ## ✨ Usage
 
-Once installed, you can use Mockie from anywhere:
+Once installed, you can use Mockie directly from the command line from any directory:
+
+### Starting the Server
 
 ```bash
-# Start server
+# Start server on default port (3000)
+mockie serve
+
+# Start server on custom port
+mockie serve --port 8080
+
+# Start with log level
+MOCKIE_LOG_LEVEL=debug mockie serve --port 3000
+```
+
+### Managing Endpoints
+
+```bash
+# Add a GET endpoint
+mockie add --method GET --path /api/users --response '{"users":[]}'
+
+# Add endpoint with status code
+mockie add --method POST --path /api/data --status 201 --response '{"id":1,"created":true}'
+
+# Add endpoint with delay (simulates latency)
+mockie add --method GET --path /slow --delay_ms 2000 --response '{"data":"slow response"}'
+
+# List all endpoints
+mockie list
+
+# Connect to remote server (if running on different machine)
+mockie add --method GET --path /remote --response '{"msg":"test"}' --server http://192.168.1.100:3000
+```
+
+### Testing Endpoints
+
+```bash
+# Test an endpoint with curl
+curl http://localhost:3000/api/users
+
+# Test with custom method
+curl -X POST http://localhost:3000/api/data
+
+# Include headers
+curl -H "Content-Type: application/json" http://localhost:3000/api/users
+```
+
+### Server Management
+
+```bash
+# Shutdown the server
+mockie shutdown
+
+# Show help for any command
+mockie --help
+mockie serve --help
+mockie add --help
+mockie list --help
+
+# Show version
+mockie --version
+```
+
+### Complete Example
+
+```bash
+# Terminal 1: Start the server
 mockie serve --port 3000
 
-# In another terminal
-mockie add --method GET --path /api/users --response '{"data":[]}'
+# Terminal 2: Add some endpoints
+mockie add --method GET --path /users --response '[{"id":1,"name":"Alice"},{"id":2,"name":"Bob"}]'
+mockie add --method GET --path /users/1 --response '{"id":1,"name":"Alice","email":"alice@example.com"}'
+mockie add --method POST --path /users --status 201 --response '{"id":3,"name":"Charlie","created":true}'
+
+# Terminal 2: List endpoints
 mockie list
+
+# Terminal 2: Test endpoints
+curl http://localhost:3000/users
+curl http://localhost:3000/users/1
+curl -X POST http://localhost:3000/users
+
+# Terminal 2: Shutdown when done
 mockie shutdown
 ```
 
