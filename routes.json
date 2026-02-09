@@ -1,0 +1,11 @@
+[
+  {
+    "method": "GET",
+    "path": "/ping",
+    "status": 200,
+    "delay_ms": 0,
+    "response": {
+      "ok": true
+    }
+  }
+]
