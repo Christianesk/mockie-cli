@@ -60,7 +60,7 @@ set INSTALL_PATH=%APPDATA_PATH%
 :add_to_path
 echo.
 echo ℹ️  Adding to PATH...
-setx PATH "!INSTALL_PATH!;%%PATH%%" >nul 2>&1
+setx PATH "!INSTALL_PATH!;!PATH!" >nul 2>&1
 if errorlevel 1 (
     echo ⚠️  Warning: Could not automatically add to PATH
     echo    Manually add: !INSTALL_PATH! to your system PATH
