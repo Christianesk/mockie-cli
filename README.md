@@ -24,6 +24,58 @@ cargo run -- list
 curl http://localhost:3000/users
 ```
 
+## 📦 Installation
+
+### Option 1: Automatic Installation (Recommended)
+
+#### Windows
+```bash
+# Download and run the installer in cmd
+install.bat
+
+# Or use Python installer
+python install.py
+```
+
+#### macOS/Linux
+```bash
+# Make script executable
+chmod +x install.sh
+
+# Run installer
+./install.sh
+
+# Or use Python installer
+python3 install.py
+```
+
+### Option 2: Manual Installation
+
+1. Build the release binary
+```bash
+cargo build --release
+```
+
+2. Copy the executable to your system PATH:
+   - **Windows**: `target\release\mockie.exe` → Add to PATH
+   - **macOS/Linux**: `target/release/mockie` → `/usr/local/bin/`
+
+3. Verify installation
+```bash
+mockie --version
+```
+
+### Option 3: From Source
+```bash
+# Clone and build
+git clone <repo>
+cd mockie
+cargo build --release
+./target/release/mockie serve
+```
+
+> 📚 See [INSTALL.md](INSTALL.md) for detailed installation instructions
+
 ## 📋 Features
 
 - ✅ REST API to dynamically add/list endpoints
